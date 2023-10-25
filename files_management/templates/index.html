@@ -1,0 +1,94 @@
+{% extends 'base.html' %} {% load static %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-group">
+                    <h3 class="fw-bold">My Files</h3>
+                </div>
+
+                <form class="form-group d-flex">
+                    <input type="text" class="form-control me-2" name="search" placeholder="Search"/>
+                    <button type="submit" class="btn btn-dark border-1 d-flex">
+                        <i class="bi bi-filter"></i> <span>Filters</span>
+                    </button>
+                </form>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <i class="bi bi-cloud-upload"></i> Upload File
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12">
+            <table class="table table-responsive">
+                <thead>
+                <tr>
+                    <th class="fw-bold">Title</th>
+                    <th class="fw-bold">Description</th>
+                    <th class="fw-bold">File</th>
+                    <th class="fw-bold">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if files %}
+                    {% for file in files %}
+                        <tr>
+                            <td>{{ file.title }}</td>
+                            <td>{{ file.description }}</td>
+                            <td>
+                                <a href="{{ file.attachement.url }}">
+                                    <img src="{% static 'images/download.png' %}"/> {{ file.attachement.name }}
+                                </a>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm"><i class="bi bi-trash-fill text-light"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h1 class="modal-title fs-5 text-center fw-bold" id="exampleModalLabel">Upload File</h1>
+                    <form action="/upload_file/" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="title" class="form-label fw-bold">Title:</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label fw-bold">Description:</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"
+                                      required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="file" class="form-label fw-bold">File Attachment:</label>
+                            <input type="file" class="form-control" id="attachement" name="attachement" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary w-50 me-2" data-bs-dismiss="modal">Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary w-50">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

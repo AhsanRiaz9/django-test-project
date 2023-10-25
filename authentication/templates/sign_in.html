@@ -1,0 +1,82 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="d-flex justify-content-center my-5">
+  <div class="col-8 col-lg-4">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+      <img src="{% static 'images/logo.png' %}" height="80px" width="80px" />
+      <h1>Welcome Back</h1>
+    </div>
+
+    <div class="border border-1 shadow rounded rounded-3 p-4">
+      <form action="/sign_in/" method="post">
+        {% csrf_token %}
+        <div class="form-group mb-2">
+          <label class="fw-bold">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Example23@gmail.com"
+            name="email"
+            required
+          />
+        </div>
+        <div class="form-group mb-2">
+          <label class="fw-bold">Password</label>
+          <div class="input-group">
+            <input
+              type="password"
+              class="form-control"
+              placeholder="******"
+              name="password"
+              required
+            />
+            <button
+              class="btn btn-outline-secondary toggle-password"
+              type="button"
+            >
+              <i class="bi bi-eye-slash"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group mb-2 text-end my-1">
+          <a href="#" class="">Forget Password?</a>
+        </div>
+
+        <div class="form-group mb-2 d-flex justify-content-center">
+          <input
+            type="submit"
+            class="btn btn-primary fw-bold w-50"
+            value="Sign In"
+          />
+        </div>
+
+        <div class="form-group mb-2 text-center">OR</div>
+
+        <div class="form-group mb-2 d-flex justify-content-center">
+          <a href="/sign_up/" class="btn btn-light fw-bold border border-1 w-50"
+            >Sign Up</a
+          >
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const passwordInputs = document.querySelectorAll(".toggle-password");
+
+  passwordInputs.forEach(function (button) {
+    button.addEventListener("click", function () {
+      const passwordInput = this.previousElementSibling;
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        this.innerHTML = '<i class="bi bi-eye"></i>';
+      } else {
+        passwordInput.type = "password";
+        this.innerHTML = '<i class="bi bi-eye-slash"></i>';
+      }
+    });
+  });
+</script>
+
+{% endblock %}
